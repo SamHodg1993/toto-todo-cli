@@ -21,6 +21,7 @@ type TodoServiceInterface interface {
 // ProjectServiceInterface defines methods needed from project service
 type ProjectServiceInterface interface {
 	HandleNoExistingProject() (int, error)
+	AddNewProjectWithPrompt() error
 }
 
 // Service handles utility command operations
@@ -63,6 +64,9 @@ func (s *Service) CleanAndPrintTodos(reverseList bool) error {
 			return err
 		}
 		if choice == 2 {
+			if err := s.projectService.AddNewProjectWithPrompt(); err != nil {
+				return err
+			}
 			return s.CleanAndPrintTodos(reverseList)
 		}
 	}
